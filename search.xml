@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Hexo 常用指令]]></title>
+    <url>%2F2018%2F09%2F09%2FHexo-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%2F</url>
+    <content type="text"><![CDATA[指令 新建文章 指令：hexo new “文章的标题（可以带空格）” 简写：hexo n生成静态文件 指令：hexo generate 简写：hexo g部署网站 （部署之前先生成静态文件） 指令：hexo deploy 简写：hexo d启动服务器预览 指令：hexo server 简写：hexo s清除缓存 指令：hexo clean完成后部署（两条效果一样） 指令：hexo d -g 指令：hexo g -d]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[hexo+next设置相关]]></title>
     <url>%2F2018%2F09%2F08%2Fhexo%2Bnext%E8%AE%BE%E7%BD%AE%E7%9B%B8%E5%85%B3%2F</url>
     <content type="text"><![CDATA[学习如何使用 构建自己的博客hexo-如何生成一篇新的post个性化配置主题优化 配置 写文章 hexo支持用markdown写作，在目录blog/source/_posts新建markdown文件，或者使用命令hexo new posts “你的文章标题”(有空格时必须加引号) 默认配置文件中设置的default_layout: post，所以也可以用 hexo new “你的文章标题”(有空格时必须加引号) 小坑：&#123;&#123;&#125;&#125;符号编译出错 markdown生成静态页面，&#123;&#123;&#125;&#125;是swig模板符号，属于特殊字符，在编译时解析不了双大括号中间字符串就会报错 解决方案：用转义字符代替12&#123; -&gt; &amp;#123; — 大括号左边部分Left curly brace&#125; -&gt; &amp;#125; — 大括号右边部分Right curly brace 添加文章分类页 cd blog hexo new page categories 修改blog/source/categories/index.md 文件1234title: 分类date: 2018-09-08 15:22:17type: categoriescomments: false #不开启评论功能 vi blog/themes/next/_config.yml 把 #categories: /categories/ || th 前面的#去掉 添加标签分类页 cd blog hexo new page tags 修改blog/source/tags/index.md 文件1234title: 标签date: 2018-09-08 15:35:44type: tagscomments: false vi blog/themes/next/_config.yml 把 #tags: /tags/ || tags 前面的#去掉 添加404页面 把写好的404.html 页面放到 blog/themes/next/source 切换主题 vi blog/themes/next/_config.yml12345# Schemes #scheme: Muse #scheme: Mist scheme: Pisces #scheme: Gemini 百度统计 注册百度统计，管理 &gt; 网站列表 &gt; 新增网站完成后，代码管理 &gt; 代码获取，就能得到统计id123456789&lt;script&gt;var _hmt = _hmt || [];(function() &#123; var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?4cb26b281687c7ae654b8b53e58b1bff"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);&#125;)();&lt;/script&gt; vi blog/themes/next/_config.yml 把 #baidu_analytics: 改为 baidu_analytics: 4cb26b281687c7ae654b8b53e58b1bff 不蒜子统计 不蒜子统计可以统计站点以及每个页面的PV、UV和站点总的访问数，以小眼睛的形式展现。 编辑主题配置文件中的busuanzi_count的配置项。当enable: true时，代表开启全局开关。若total_visitors、total_views、post_views的值均为false时，不蒜子仅作记录而不会在页面上显示。 在使用localhost:4000的时候会出现访问人数很多的情况，因为这个ip大家测试的时候在用 只有gemini、pisces主题才有这个功能（默认主题为muse） 评论功能 之 gitment配置 vi blog/themes/next/_config.yml 改之后12345678910111213gitment: enable: true mint: true count: true lazy: false cleanly: false language: zh-CN github_user: heyuhua1992@163.com github_repo: heyuhua1992.github.io client_id: a27075a2e647766f5b61 client_secret: f2d60a60dce31a5de44588da0f3ef35669c0885b proxy_gateway: redirect_protocol: 开启enable为true就显示评论框了，不过要真正实现评论可用，需要 用自己的github账号注册一个应用许可证书，即OAuth application，注册成功就生成了client_id和client_secret。 步骤：你的github首页 &gt; settings &gt; Developer settings &gt; OAuth Apps &gt; New oAuth App。填写好相关信息，其中，Homepage URL和Authorization callback URL都写上你的github博客首页地址，比如https://xxx.github.io/，点击Register application即可完成注册，生成Client ID和Client Secret 底部建站时间和图标修改 改后123456789101112icon: name: user color: &quot;#23ade5&quot;copyright:powered: enable: false version: falsetheme: enable: false version: false 侧边栏社交链接 vi blog/themes/next/_config.yml 改后12social: GitHub: https://github.com/heyuhua1992 || github 添加百度/谷歌/本地 自定义站点内容搜索 安装 hexo-generator-searchdb，在站点的根目录下执行以下命令：1npm install hexo-generator-searchdb --save 编辑 站点配置文件，新增以下内容到任意位置： 12345search: path: search.xml field: post format: html limit: 10000 编辑 主题配置文件，启用本地搜索功能： 123# Local searchlocal_search: enable: true Hexo-admin Hexo-admin插件允许我们直接在本地页面上修改文章内容。 下载 cd /blog1npm i hexo-admin --save 登录http://localhost:4000/admin即可看到我们所有的文章内容，并且在可视化界面中操作文章内容 在网站首页只显示每篇文章的部分内容，不要全部内容都展示出来。 123auto_excerpt:enable: true # 显示阅读全文length: 150 要注意的问题 有些文章评论初始化弹出validation failed错误 因为GitHub的每个issues有两个lables，一个是gitment，另一个是id，id取的是页面pathname，标签长度限定不超过50个字符，而像一般中文标题文章，转义后字符很容易超过50个字符 目录blog/themes/next/layout/_third-party/comments找到文件gitment.swig 把 id: window.location.pathname, 改为 id: &#123;&#123;page.date&#125;&#125;, 在这里我用文章创建时间戳来当作id，这样长度就不会超过50个字符，成功解决！]]></content>
       <categories>
-        <category>其他</category>
+        <category>Hexo</category>
       </categories>
       <tags>
-        <tag>其他</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
 </search>
