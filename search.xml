@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[.sh 执行多命令]]></title>
+    <url>%2F2018%2F09%2F11%2Fsh-%E6%89%A7%E8%A1%8C%E5%A4%9A%E5%91%BD%E4%BB%A4%2F</url>
+    <content type="text"><![CDATA[使用.sh脚本文件执行多条命令在使用 Hexo 的时候，每次提交到服务器都需要运行： hexo clean hexo g gulp [//]: 如果没有使用gulp进行压缩，这一步不需要 hexo d 文件比较12345678910111213-e 判断对象是否存在-d 判断对象是否存在，并且为目录-f 判断对象是否存在，并且为常规文件-L 判断对象是否存在，并且为符号链接-h 判断对象是否存在，并且为软链接-s 判断对象是否存在，并且长度不为0-r 判断对象是否存在，并且可读-w 判断对象是否存在，并且可写-x 判断对象是否存在，并且可执行-O 判断对象是否存在，并且属于当前用户-G 判断对象是否存在，并且属于当前用户组-nt 判断file1是否比file2新 [ &quot;/data/file1&quot; -nt &quot;/data/file2&quot; ]-ot 判断file1是否比file2旧 [ &quot;/data/file1&quot; -ot &quot;/data/file2&quot; ]]]></content>
+      <categories>
+        <category>.sh</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>GulpJs</tag>
+        <tag>.sh</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[GulpJs 使用]]></title>
     <url>%2F2018%2F09%2F10%2FGulp-%E4%BD%BF%E7%94%A8%2F</url>
     <content type="text"><![CDATA[根据这个教程学习的前端构建工具gulpjs的使用介绍及技巧-无双 在博客中使用 (来源于网络) 运行 npm install gulp -g 在Blog目录下 运行 npm i -S gulp 在Blog目录下 运行 以下命令1npm i -S gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean gulp-imagemin 在Blog目录下 添加gulpfile.js文件， 复制以下代码粘贴进去12345678910111213141516171819202122232425262728293031323334var gulp = require('gulp');var minifycss = require('gulp-minify-css');var uglify = require('gulp-uglify');var htmlmin = require('gulp-htmlmin');var htmlclean = require('gulp-htmlclean');// 压缩 public 目录 cssgulp.task('minify-css', function() &#123; return gulp.src('./public/**/*.css') .pipe(minifycss()) .pipe(gulp.dest('./public'));&#125;);// 压缩 public 目录 htmlgulp.task('minify-html', function() &#123; return gulp.src('./public/**/*.html') .pipe(htmlclean()) .pipe(htmlmin(&#123; removeComments: true, minifyJS: true, minifyCSS: true, minifyURLs: true, &#125;)) .pipe(gulp.dest('./public'))&#125;);// 压缩 public/js 目录 jsgulp.task('minify-js', function() &#123; return gulp.src('./public/**/*.js') .pipe(uglify()) .pipe(gulp.dest('./public'));&#125;);// 执行 gulp 命令时执行的任务gulp.task('default', [ 'minify-html','minify-css','minify-js']);// 压缩生成的博文是先执行 hexo g (生成博文) 然后执行 gulp (压缩) 就会根据 gulpfile.js 中的配置，对 public 目录中的静态资源文件进行压缩。 过段时间或许会加入图片压缩]]></content>
