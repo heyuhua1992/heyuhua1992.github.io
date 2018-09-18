@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[express弃用jade启用html]]></title>
+    <url>%2F2018%2F09%2F13%2Fexpress%E5%BC%83%E7%94%A8jade%E5%90%AF%E7%94%A8html%2F</url>
+    <content type="text"><![CDATA[window 平台启动命令 第一种启动方式 set DEBUG=server &amp; npm start 上面的server是项目名字，在package.json中有 第二种打开方式(来源于网络) node ./bin/www 1第二种启动方式是根据原生代码找到的，第一种启动方式官方文档中写的。 弃用jade启用html 第一步 删除views中的.jade文件 第二步 npm install ejs –save 第三步 在app.js 文件中 引入ejs var ejs = require(‘ejs’); 设置怎么查找.html文件 app.engine(‘.html’, ejs.__express) 设置视图引擎 app.set(‘view engine’, ‘html’); 把jade 改成html]]></content>
+      <categories>
+        <category>Express</category>
+      </categories>
+      <tags>
+        <tag>Express</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[把vue全家桶+express+mongodb 部署到服务器]]></title>
+    <url>%2F2018%2F09%2F13%2F%E6%8A%8Avue%E5%85%A8%E5%AE%B6%E6%A1%B6%26express%26mongodb%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%2F</url>
+    <content type="text"><![CDATA[软件版本 window 10 开发环境下： Vue：2.9.6 Node：v8.11.3 Express：4.16.0 MongoDb：MongoDB shell version v4.0.2 在centos7 服务器环境进行部署： Node：v8.12.0 pm2：3.1.2 nginx：nginx/1.14.0 前置条件 已经安装node 有自己的域名 服务器部署 把用express搭建的node服务器端打包成zip文件 把zip文件传到服务器的 /heyuhua/mall 目录下（需要预先建立好文件目录） 服务器端安装zip解压缩 ： yum install zip unzip 解压缩zip文件 unzip server.zip (tips: 打包成zip的时候把node_modules文件也打包进去了，不用再执行npm install了，否则需要执行npm install) vue项目运行npm run build ,把生成的文件打包成zip文件，传输到服务器的/heyuhua/default/mall 目录下（需要预先建立好文件目录），解压缩，得到index.html与static文件夹。(tips: 打包之前把vue项目中的config/index.js文件的assetsPublicPath设置为空：assetsPublicPath: ‘’.部署完后，访问的时候，路径会出现两个斜杆–&gt; // ) 服务器安装pm2 ：npm install pm2 -g 尝试以pm2启动服务器 进入服务器的根目录下的bin文件 pm2 start www 关闭：pm2 delete 0 (对应的id号) 安装nginx 添加源： sudo rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm 更新源：sudo yum update 安装：sudo yum install -y nginx 启动：nginx 启动Nginx并设置开机自动运行（必须先关闭后运行以下语句，关闭：pkill -9 nginx） 12sudo systemctl start nginx.servicesudo systemctl enable nginx.service nginx配置 使用 whereis nginx 找到nginx的配置目录，我使用的1.14.0版本，配置目录在 /etc/nginx 下。进入/etc/nginx cat nginx.conf 可以看到 最后一句： include /etc/nginx/conf.d/*.conf; 进入 /etc/nginx/conf.d/ 目录，新建一个 .conf 文件(名字随意)，mall.conf。把以下内容复制进mall.conf文件 123456789101112131415161718server &#123; listen 80; #监听的端口，一般情况，使用http访问的设置为80，使用https的设置为443 server_name mall.heyuhua.xyz; #heyuhua.xyz为一级域名，mall为二级域名，这是访问网站的主域名 root /heyuhua/default/mall/; #放vue项目build之后的文件的目录 index index.html; # 入口文件名，vue build之后给的是index.html,如果把build出来的html文件改名了，这个也要改。可以设置多个入口文件,用空格隔开 如：index.html login.html location /goods &#123; # 端口转发，在express中的app.js（比如：app.use('/goods', require('./routes/goods'));）中有多少个一级路由这个就有多少个 proxy_pass http://127.0.0.1:3000/goods; #设置服务器的端口地址 &#125; location /users &#123; proxy_pass http://127.0.0.1:3000/users; &#125; # 下面这个是vue使用history模式后需要加上的，你可以看下官方的说法 # https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90 location / &#123; try_files $uri $uri/ /index.html; &#125;&#125; 改良（无限路由） 12345678910111213141516171819202122server &#123; listen 80; server_name *.heyuhua.xyz; root /heyuhua/default; index index.html; if ($host ~ ^(mall)\.heyuhua\.xyz$) &#123; set $erji $1; rewrite ^(.*)$ /$erji$1 last; &#125; location /mall/goods &#123; proxy_pass http://127.0.0.1:3000/goods; &#125; location /mall/users &#123; proxy_pass http://127.0.0.1:3000/users; &#125; location / &#123; try_files $uri $uri/ /index.html; &#125;&#125; ​ pm2常用命令 来源于pm2常用的命令用法介绍 1234567891011121314151617181920212223242526272829303132$ pm2 start app.js # 启动app.js应用程序$ pm2 start app.js -i 4 # cluster mode 模式启动4个app.js的应用实例 # 4个应用程序会自动进行负载均衡$ pm2 start app.js --name="api" # 启动应用程序并命名为 "api"$ pm2 start app.js --watch # 当文件变化时自动重启应用$ pm2 start script.sh # 启动 bash 脚本$ pm2 list # 列表 PM2 启动的所有的应用程序$ pm2 monit # 显示每个应用程序的CPU和内存占用情况$ pm2 show [app-name] # 显示应用程序的所有信息$ pm2 logs # 显示所有应用程序的日志$ pm2 logs [app-name] # 显示指定应用程序的日志$ pm2 flush # 清洗所有的数据[注：我没有试出来效果]$ pm2 stop all # 停止所有的应用程序$ pm2 stop 0 # 停止 id为 0的指定应用程序$ pm2 restart all # 重启所有应用$ pm2 reload all # 重启 cluster mode下的所有应用$ pm2 gracefulReload all # Graceful reload all apps in cluster mode$ pm2 delete all # 关闭并删除所有应用$ pm2 delete 0 # 删除指定应用 id 0$ pm2 scale api 10 # 把名字叫api的应用扩展到10个实例$ pm2 reset [app-name] # 重置重启数量$ pm2 startup # 创建开机自启动命令$ pm2 save # 保存当前应用列表$ pm2 resurrect # 重新加载保存的应用列表$ pm2 update # Save processes, kill PM2 and restore processes$ pm2 generate # Generate a sample json configuration file$ pm2 deploy app.json prod setup # Setup "prod" remote server$ pm2 deploy app.json prod # Update "prod" remote server$ pm2 deploy app.json prod revert 2 # Revert "prod" remote server by 2$ pm2 module:generate [name] # Generate sample module with name [name]$ pm2 install pm2-logrotate # Install module (here a log rotation system)$ pm2 uninstall pm2-logrotate # Uninstall module$ pm2 publish # Increment version, git push and npm publish]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Express</tag>
+        <tag>其他</tag>
+        <tag>Vue</tag>
+        <tag>Node</tag>
+        <tag>MongoDb</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[.sh 执行多命令]]></title>
     <url>%2F2018%2F09%2F11%2Fsh-%E6%89%A7%E8%A1%8C%E5%A4%9A%E5%91%BD%E4%BB%A4%2F</url>
     <content type="text"><![CDATA[使用.sh脚本文件执行多条命令在使用 Hexo 的时候，每次提交到服务器都需要运行： hexo clean hexo g gulp (如果没有使用gulp进行压缩，这一步不需要) hexo d 感觉很麻烦，并且每一步还要等它完成后在输入下一条指令.sh 脚本文件可以很好的解决这个问题而且无需安装直接使用新建一个push.sh 文件把以下代码拷贝进去 123456789101112131415161718192021222324echo '准备推送到github'if [ -d "public" ]; then echo 'public 文件存在,执行hexo clean' hexo cleanelse echo 'public 文件不存在'fiecho '正在执行hexo g'hexo gif [ -s "gulpfile.js" ]; then echo 'gulpfile.js 文件存在, 执行gulp' echo '正在压缩代码' gulpelse echo 'gulpfile.js 文件不存在'fiecho '提交到服务器'hexo dread -s -p "已完成，请按任意键退出" pass 然后双击 .sh 文件即可运行，也可以在shell终端中进入 .sh 文件所在目录，运行 ./push.sh ,然后tab一下，按enter键运行 分析下上面的代码echo ‘提示信息’ ，用于在终端上输出提示信息，有没有不影响程序的运行，只为了提示用户现在执行到了哪一步或者接下来要输入的信息的格式。 123456789101112131415161718# 下面的 if是判断语句入口，[] 内是判断的条件 # -d 是文件比较符的一种，用于判断对象是否存在，并且为目录# "public" 是文件或者目录的路径，默认为当前.sh文件所在目录。要注意判断文件的时候要加上后缀# 满足条件的时候执行then之后，else之前的命令# 要注意空格，格式要求按照示例代码，否则可能出错if [ -d "public" ]; then echo 'public 文件存在,执行hexo clean' # 这里的hexo clean 相当于在shell终端上，进入到当前.sh文件中执行hexo clean hexo cleanelse echo 'public 文件不存在'fi``` 命令运行完之后不关闭shell终端，用户输入后再推出```sh# 等待用户输入密码read -s -p "已完成，请按任意键退出" pass 文件比较符12345678910111213-e 判断对象是否存在-d 判断对象是否存在，并且为目录-f 判断对象是否存在，并且为常规文件-L 判断对象是否存在，并且为符号链接-h 判断对象是否存在，并且为软链接-s 判断对象是否存在，并且长度不为0-r 判断对象是否存在，并且可读-w 判断对象是否存在，并且可写-x 判断对象是否存在，并且可执行-O 判断对象是否存在，并且属于当前用户-G 判断对象是否存在，并且属于当前用户组-nt 判断file1是否比file2新 [ &quot;/data/file1&quot; -nt &quot;/data/file2&quot; ]-ot 判断file1是否比file2旧 [ &quot;/data/file1&quot; -ot &quot;/data/file2&quot; ]]]></content>
@@ -9,8 +35,8 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
-        <tag>.sh</tag>
         <tag>GulpJs</tag>
+        <tag>.sh</tag>
       </tags>
   </entry>
   <entry>
