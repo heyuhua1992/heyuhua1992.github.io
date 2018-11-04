@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[使用png存取数据]]></title>
+    <url>%2F2018%2F11%2F04%2F%E4%BD%BF%E7%94%A8png%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE%2F</url>
+    <content type="text"><![CDATA[在png图片中存取数据需要的原因：Mobile Safari忽略link元素中的download属性。这导致序列化的JSON数据显示在浏览器窗口中，而无法将其存储在用户的设备上。没有办法禁用它 参考来源： Hijacking HTML canvas and PNG images to store arbitrary text data Retrieving data from hijacked PNG images using HTML canvas and Javascript 例子 ： png-svae-data-png-get-data 注意：获取数据的时候，图片的路径设置，在canvas-get-data.html中 123456let img = new Image()img.onload = function () &#123; console.log('onload') draw()&#125;img.src = 'image.png' // 图片在哪里设置的路径就在那里]]></content>
+      <categories>
+        <category>Js</category>
+      </categories>
+      <tags>
+        <tag>Js</tag>
+        <tag>Png</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[express弃用jade启用html]]></title>
     <url>%2F2018%2F09%2F13%2Fexpress%E5%BC%83%E7%94%A8jade%E5%90%AF%E7%94%A8html%2F</url>
     <content type="text"><![CDATA[window 平台启动命令 第一种启动方式 set DEBUG=server &amp; npm start 上面的server是项目名字，在package.json中有 第二种打开方式(来源于网络) node ./bin/www 1第二种启动方式是根据原生代码找到的，第一种启动方式官方文档中写的。 弃用jade启用html 第一步 删除views中的.jade文件 第二步 npm install ejs –save 第三步 在app.js 文件中 引入ejs var ejs = require(‘ejs’); 设置怎么查找.html文件 app.engine(‘.html’, ejs.__express) 设置视图引擎 app.set(‘view engine’, ‘html’); 把jade 改成html]]></content>
